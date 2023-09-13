@@ -18,13 +18,9 @@ void scan_quote_string(char *str);
 
 int inserirCampoFixo (void* r, size_t size_dado, size_t num_dado, size_t tam_campo, FILE* arq);
 int inserirStringCampoFixo (char* r, size_t tam_campo, FILE* arq);
-int inserirCharCampoFixo (char r, size_t tam_campo, FILE* arq);
-int inserirCampoVariavel (void* r, FILE* arq);
 
 int lerCampoFixo (FILE *arq, void *campo, int tam_campo, int qtd_campo);
 int lerStringCampoFixo (FILE *arq, char *campo, int tam_campo);
-int lerStringCampoVariavel (FILE *arq, char *campo);
 int escreverLixo(FILE *arq, size_t tam);
-int testaRegistro (Registro reg, Busca *filtro, int numFiltro);
 
 #endif

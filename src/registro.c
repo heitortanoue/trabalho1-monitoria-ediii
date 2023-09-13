@@ -3,44 +3,28 @@
 #include <string.h>
 #include "../headers/registro.h"
 #include "../headers/orgarquivos.h"
-#include "../headers/csv.h"
+#include "../headers/io.h"
 #define LIXO '$'
 
 // Cria um novo registro e aloca memoria para suas strings
 int criaRegistro (Registro *r) {
     r->removido = NAO_REMOVIDO;
-    r->encadeamento = -1;
-    r->siglaPais = (char*) alocaMemoria(sizeof(char) * (TAM_SIGLA + 1));
-    r->nomePoPs = (char*) alocaMemoria(sizeof(char) * TAM_STRING);
-    r->nomePais = (char*) alocaMemoria(sizeof(char) * TAM_STRING);
+    r->grupo = -1;
+    r->popularidade = -1;
+    r->peso = -1;
+    r->tecnologiaOrigem.tamanho = 0;
+    r->tecnologiaDestino.tamanho = 0;
+
+    r->tecnologiaDestino.string = (char*) alocaMemoria(sizeof(char) * TAM_STRING);
+    r->tecnologiaOrigem.string = (char*) alocaMemoria(sizeof(char) * TAM_STRING);
 
     return SUCESSO;
 }
 
 // Libera a memória alocada para um registro
 int destroiRegistro (Registro *r) {
-    free(r->siglaPais);
-    free(r->nomePoPs);
-    free(r->nomePais);
-
-    return SUCESSO;
-}
-
-//Chamada da leitura dos campos a cada registro no teclado
-int lerDadosRegistroTeclado(Registro *t) {
-    char str[128];
-    t->removido = NAO_REMOVIDO;
-    t->encadeamento = -1;
-
-    scanf("%d", &t->idConecta);
-    readline(str);
-    insereStringRegistro(str, t->siglaPais, TAM_SIGLA);
-    scanf("%d", &t->idPoPsConectado);
-    readline(str);
-    scanf("%c", &t->unidadeMedida);
-    scanf("%d", &t->velocidade);
-    readline(t->nomePoPs);
-    readline(t->nomePais);
+    free(r->tecnologiaDestino.string);
+    free(r->tecnologiaOrigem.string);
 
     return SUCESSO;
 }
@@ -104,26 +88,32 @@ int insereStringRegistro (char* str, char* str_registro, int tam_campo) {
     return SUCESSO;
 }
 
+
+void printNulo(){
+    printf("NULO, ");
+}
 // Imprime todas as informações do registro
 void imprimeRegistro (Registro *r ) {
-    if (intValido(r->idConecta)) {
-        printf("Identificador do ponto: %d\n", r->idConecta);
-    }
-    if (stringValida(r->nomePoPs)) {
-        printf("Nome do ponto: %s\n", r->nomePoPs);
-    }
-    if (stringValida(r->nomePais)) {
-        printf("Pais de localizacao: %s\n", r->nomePais);
-    }
-    if (stringValida(r->siglaPais)) {
-        printf("Sigla do pais: %s\n", r->siglaPais);
-    }
-    if (intValido(r->idPoPsConectado)) {
-        printf("Identificador do ponto conectado: %d\n", r->idPoPsConectado);
-    }
-    if (intValido(r->velocidade) && charValido(r->unidadeMedida)) {
-        printf("Velocidade de transmissao: %d %c%s\n", r->velocidade, r->unidadeMedida, "bps");
-    }
+    if (stringValida(r->tecnologiaOrigem.string)) {
+        printf("%s, ", r->tecnologiaOrigem.string);
+    } else printNulo();
+
+    if (intValido(r->grupo)) {
+        printf("%d, ", r->grupo);
+    } else printNulo();
+
+    if (intValido(r->popularidade)) {
+        printf("%d, ", r->popularidade);
+    } else printNulo();
+
+    if (stringValida(r->tecnologiaDestino.string)) {
+        printf("%s, ", r->tecnologiaDestino.string);
+    } else printNulo();
+
+    if (intValido(r->peso)) {
+        printf("%d", r->peso);
+    } else printf("NULO");
+
     printf("\n");
 }
 
@@ -140,47 +130,16 @@ void imprimeRegistroRaw (FILE* arq) {
 int contarRegistros (FILE *arq) {
     fseek(arq, 0, SEEK_END);
     long tamFinal = ftell(arq);
-    fseek(arq, TAM_PG_DISCO - 1, SEEK_SET);
+    fseek(arq, TAM_CABECALHO - 1, SEEK_SET);
     long tamInicial = ftell(arq);
     fseek(arq, 0, SEEK_SET);
 
     return (tamFinal - tamInicial) / TAM_REGISTRO;
 }
 
-//Funcoes de calculo
-
-// Calcula o RRN de um registro atraves do seu ByteOffset
-int calculaRRN(long byteoffset){
-    return (byteoffset / TAM_REGISTRO) - 15;
-}
-
 // Calcula o ByteOffset de um registro atraves do seu RRN
 int calculaByteoffset (int rrn){
-    return ((rrn + 15) * TAM_REGISTRO);
-}
-
-//Imprime os RRN da pilha de reg. removidos
-int imprimePilha (){
-    char nome_arquivo[128];
-    scanf("%s", nome_arquivo);
-    
-    FILE* bin = abreArquivo(nome_arquivo, "rb");
-
-    Cabecalho c;
-    lerCabecalhoArquivo(bin, &c);
-
-    int pos;
-    pos = c.topo;
-    // Enquanto a pilha nao for -1, imprime e vai para o proximo valor
-    while (pos != -1){
-        printf("%d\n", pos);
-        
-        fseek(bin, calculaByteoffset(pos) + 1, SEEK_SET);
-        fread(&pos, sizeof(int), 1, bin);
-    }
-    printf("%d\n", pos);
-
-    return SUCESSO;
+    return (rrn  * TAM_REGISTRO) + TAM_CABECALHO;
 }
 
 //Funcao para alocar uma quantidade s na memoria e padronizar o tratamento de erro

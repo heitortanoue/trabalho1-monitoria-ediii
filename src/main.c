@@ -1,20 +1,14 @@
-#include "../headers/orgarquivos.h"
-#include "../headers/registro.h"
+#include <stdio.h>
+
 #include "../headers/funcionalidades.h"
-#include "../headers/removeinsere.h"
 
 /*
       ---------------------------------------------
-    [  TRABALHO1 - ESTRUTURA DE DADOS III - 2022/2  ]
+    [  TRABALHO1 - ESTRUTURA DE DADOS III - 2023/2  ]
       ---------------------------------------------
-    
+
     ->  Heitor Tanoue de Mello
         NUSP: 12547260
-        100% da sua parte
-
-    ->  Pedro Oliveira Torrente
-        NUSP: 11798853
-        100% da sua parte
 */
 
 int main () {
@@ -31,13 +25,7 @@ int main () {
             selectWhere();
             break;
         case 4:
-            removeRegistro();
-            break;
-        case 5:
-            insert();
-            break;
-        case 6:
-            compact();
+            selectRRN();
             break;
         default:
             break;

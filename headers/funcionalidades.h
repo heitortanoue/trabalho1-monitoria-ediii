@@ -4,8 +4,6 @@
 int createTable (void);
 int selectFrom (void);
 int selectWhere (void);
-int removeRegistro(void);
-int insert ();
-int compact();
+int selectRRN (void);
 
 #endif

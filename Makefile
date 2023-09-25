@@ -1,6 +1,6 @@
 CC          := gcc
 DEBUG_FLAGS := -g3 -pedantic -Werror=implicit-function-declaration -fsanitize=address,undefined
-FLAGS       := -Wall -lm -Werror -g #$(DEBUG_FLAGS)
+FLAGS       := -Wall -lm -Werror #$(DEBUG_FLAGS)
 
 SRC         := ./src
 BIN         := ./bin
@@ -14,7 +14,6 @@ ZIP         := exercicio.zip
 ALL         := $(wildcard $(SRC)/*.c)
 ALL         := $(ALL:$(SRC)/%.c=$(BIN)/%.o)
 
-
 all: $(EXEC)
 
 compile: clean reset all
@@ -25,7 +24,7 @@ run: all
 	./$(EXEC)
 
 clean:
-	rm -f $(EXEC) $(BIN)/*.o
+	rm -f $(EXEC) $(BIN)/*.o $(ZIP) *.bin
 
 zip:
 	rm -f $(ZIP)

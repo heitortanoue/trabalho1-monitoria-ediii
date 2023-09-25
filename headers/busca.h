@@ -9,6 +9,6 @@ int criaFiltro(Busca *filtros, int qtd);
 int destroiFiltro(Busca *filtros);
 int trataFiltros(Busca *filtros, int i);
 int testaRegistro (Registro reg, Busca *filtro, int numFiltro);
-int tecnologiaCadastrada(FILE *bin, char *tecnologia, int qtdRegs);
+int tecnologiaCadastrada(FILE *bin, char* tecnologia, int qtdRegs);
 
 #endif

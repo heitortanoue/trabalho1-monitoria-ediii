@@ -45,7 +45,13 @@ int createTable (void) {
         inserirRegistroArquivo(bin, &r);
         c.proxRRN++;
 
-        if (!tecnologiaCadastrada(bin, r.tecnologiaOrigem.string, numRegistros)) {
+        if (!tecnologiaCadastrada(bin, r.tecnologiaOrigem.string, numRegistros))
+        {
+            numTecnologias++;
+        }
+
+        if (!tecnologiaCadastrada(bin, r.tecnologiaDestino.string, numRegistros))
+        {
             numTecnologias++;
         }
 
@@ -58,8 +64,6 @@ int createTable (void) {
     // Volta o cursor para o começo do arquivo
     fseek(bin, 0, SEEK_SET);
     escreveCabecalhoArquivo(bin, &c);
-
-    imprimeCabecalho(&c);
 
     destroiRegistro(&r);
     fclose(csv);
@@ -86,7 +90,7 @@ int selectFrom () {
     criaRegistro(&r);
 
     if (!qtdRegs) {
-        printf("Registro inexistente.\n\n");
+        printf("Registro inexistente.\n");
         return ERRO;
     }
 
@@ -142,6 +146,8 @@ int selectWhere (void){
                 imprimeRegistro(&r);
             }
         }
+
+        fseek(bin, TAM_CABECALHO, SEEK_SET);
     }
 
     destroiFiltro(&filtros);
@@ -168,7 +174,7 @@ int selectRRN (void) {
     criaRegistro(&r);
 
     if (rrn >= c.proxRRN) {
-        printf("Registro inexistente.\n\n");
+        printf("Registro inexistente.\n");
         return ERRO;
     }
 
@@ -177,7 +183,7 @@ int selectRRN (void) {
     if(lerRegistroArquivo(bin, &r) == SUCESSO){
         imprimeRegistro(&r);
     } else {
-        printf("Registro inexistente.\n\n");
+        printf("Registro inexistente.\n");
         return ERRO;
     }
 

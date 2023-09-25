@@ -11,7 +11,11 @@ int lerCsvRegistro (Registro *r, char *linha) {
 
     meuStrtok(temp, linha, ',');
     strcpy(r->tecnologiaOrigem.string, validaString(temp));
-    r->tecnologiaOrigem.tamanho = strlen(r->tecnologiaOrigem.string);
+    if (stringValida(r->tecnologiaOrigem.string)) {
+        r->tecnologiaOrigem.tamanho = strlen(r->tecnologiaOrigem.string);
+    } else {
+        r->tecnologiaOrigem.tamanho = 0;
+    }
 
     meuStrtok(temp, linha, ',');
     r->grupo = validaInt(temp);
@@ -21,7 +25,11 @@ int lerCsvRegistro (Registro *r, char *linha) {
 
     meuStrtok(temp, linha, ',');
     strcpy(r->tecnologiaDestino.string, validaString(temp));
-    r->tecnologiaDestino.tamanho = strlen(r->tecnologiaDestino.string);
+    if (stringValida(r->tecnologiaDestino.string)) {
+        r->tecnologiaDestino.tamanho = strlen(r->tecnologiaDestino.string);
+    } else {
+        r->tecnologiaDestino.tamanho = 0;
+    }
 
     meuStrtok(temp, linha, ',');
     r->peso = validaInt(temp);

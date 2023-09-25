@@ -131,8 +131,8 @@ int tecnologiaCadastrada(FILE *bin, char *tecnologia, int qtdRegs)
             continue;
         }
 
-        // Se a tecnologia for igual a tecnologia de origem do registro, retornar TRUE
-        if (!strcmp(reg.tecnologiaOrigem.string, tecnologia))
+        // Se a tecnologia for igual a tecnologia de origem ou de destino do registro, retornar TRUE
+        if (!strcmp(reg.tecnologiaOrigem.string, tecnologia) || !strcmp(reg.tecnologiaDestino.string, tecnologia))
         {
             fseek(bin, posAtual, SEEK_SET);
             destroiRegistro(&reg);

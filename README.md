@@ -14,8 +14,6 @@ O arquivo final é composto por um cabeçalho (que ocupa uma página de disco in
 ```c
 // Quantidade de bytes do registro de dados
 #define TAM_REGISTRO 76
-// Quantidade de bytes a serem alocados para manipulacao de strings
-#define TAM_STRING 128
 // Quantidade de bytes da parte fixa do registro
 #define TAM_REGISTRO_FIXO 21
 ```
@@ -90,7 +88,7 @@ Cria uma tabela com os campos especificados com base em um arquivo .CSV e gera d
 ```
 1 [nome-arquivo-entrada-csv] [nome-arquivo-saida-bin]
 ```
-A saída é o valor da função binarioNaTela, cedida pela professora para correção do trabalho.
+A saída é o valor da **função binarioNaTela**, cedida pela professora para correção do trabalho.
 
 ### Select From
 Imprime todos os registros de uma arquivo .BIN
